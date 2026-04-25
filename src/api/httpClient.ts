@@ -23,9 +23,22 @@ const httpClient: AxiosInstance = axios.create({
 
 httpClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    
+    const persistData = localStorage.getItem('auth-storage');
+    if (persistData) {
+      try {
+        const { state } = JSON.parse(persistData);
+        const token = state?.token;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      }
     }
     return config;
   },
