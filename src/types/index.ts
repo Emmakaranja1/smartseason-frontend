@@ -1,5 +1,10 @@
 
-export type UserRole = 'ADMIN' | 'FIELD_AGENT';
+export const UserRole = {
+  ADMIN: 'ADMIN',
+  FIELD_AGENT: 'FIELD_AGENT'
+} as const;
+
+export type UserRole = typeof UserRole[keyof typeof UserRole];
 
 export const FieldStage = {
   PLANTED: 'PLANTED',
