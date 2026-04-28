@@ -4,10 +4,13 @@ export const useDashboard = () => {
   const {
     adminDashboard,
     agentDashboard,
+    stats,
     isLoading,
+    loading,
     error,
     fetchAdminDashboard: storeFetchAdminDashboard,
     fetchAgentDashboard: storeFetchAgentDashboard,
+    fetchStats: storeFetchStats,
     clearError,
   } = useDashboardStore();
 
@@ -19,13 +22,19 @@ export const useDashboard = () => {
     await storeFetchAgentDashboard();
   };
 
+  const fetchStats = async () => {
+    await storeFetchStats();
+  };
+
   return {
     adminDashboard,
     agentDashboard,
-    loading: isLoading,
+    stats,
+    loading: loading || isLoading,
     error,
     fetchAdminDashboard,
     fetchAgentDashboard,
+    fetchStats,
     clearError,
   };
 };

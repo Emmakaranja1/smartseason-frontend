@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui/button';
@@ -13,25 +13,31 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-  const { login, isLoading, user } = useAuthStore();
+  const { login, isLoading, isAuthenticated, user } = useAuthStore();
 
   const from = location.state?.from?.pathname || '/';
+
+  // Handle redirect after successful login
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      toast.success(`Welcome back, ${user.name || 'User'}!`);
+      
+      // Redirect based on role if no 'from' path
+      if (from === '/') {
+        navigate(user.role === 'ADMIN' ? '/admin' : '/agent');
+      } else {
+        navigate(from, { replace: true });
+      }
+    }
+  }, [isAuthenticated, user, navigate, from]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       await login({ email, password });
-      toast.success(`Welcome back, ${user?.name || 'User'}!`);
-      
-      // Redirect based on role if no 'from' path
-      if (from === '/') {
-        navigate(user?.role === 'ADMIN' ? '/admin' : '/agent');
-      } else {
-        navigate(from, { replace: true });
-      }
     } catch (error: any) {
       toast.error(error.message || 'Login failed. Please check your credentials.');
     }

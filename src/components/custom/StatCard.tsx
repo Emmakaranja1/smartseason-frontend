@@ -15,8 +15,8 @@ interface StatCardProps {
 
 export const StatCard = ({ title, value, icon: Icon, description, trend, colorClass = "bg-emerald-500" }: StatCardProps) => {
   return (
-    <Card className="overflow-hidden border-stone-200 bg-white group hover:shadow-lg transition-all duration-300 rounded-2xl">
-      <CardContent className="p-6">
+    <Card className="overflow-hidden border-stone-200 bg-white group hover:shadow-lg transition-all duration-300 rounded-2xl h-full flex flex-col">
+      <CardContent className="p-6 flex-1 flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-stone-500 uppercase tracking-wider">{title}</p>
